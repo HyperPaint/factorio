@@ -2,7 +2,7 @@
 
 repository=hyperpaint
 name=factorio
-version=1.1.100
+version=1.1.101
 build=1
 
 docker build -t $repository/$name:$version .
