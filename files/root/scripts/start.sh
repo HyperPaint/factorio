@@ -80,10 +80,38 @@ prepare_app() {
 	if [ ! -f "/root/server/data/server-settings.json" ]; then
 		cp -v "/root/server/data/server-settings.example.json" "/root/server/data/server-settings.json"
   fi
+
+	if [ ! -f "/root/server/data/server-adminlist.json" ]; then
+		echo "[]" > "/root/server/data/server-adminlist.json"
+  fi
+
+  if [ ! -f "/root/server/data/server-banlist.json" ]; then
+		echo "[]" > "/root/server/data/server-banlist.json"
+  fi
+
+  if [ ! -f "/root/server/data/server-whitelist.json" ]; then
+		echo "[]" > "/root/server/data/server-whitelist.json"
+  fi
 }
 
 start_app() {
-  /root/server/bin/x64/factorio --start-server /root/server/saves/save.zip --server-settings /root/server/data/server-settings.json &
+  if [ $WHITELIST -eq 1 ]; then
+    log "Starting with whitelist..."
+    /root/server/bin/x64/factorio \
+        --start-server /root/server/saves/save.zip \
+        --server-settings /root/server/data/server-settings.json \
+        --server-adminlist /root/server/data/server-adminlist.json \
+        --server-banlist /root/server/data/server-banlist.json \
+        --server-whitelist /root/server/data/server-whitelist.json \
+        --use-server-whitelist &
+  else
+    log "Starting without whitelist..."
+    /root/server/bin/x64/factorio \
+        --start-server /root/server/saves/save.zip \
+        --server-settings /root/server/data/server-settings.json \
+        --server-adminlist /root/server/data/server-adminlist.json \
+        --server-banlist /root/server/data/server-banlist.json &
+  fi
 }
 
 stop_app() {

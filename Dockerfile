@@ -10,6 +10,8 @@ COPY --chown=root:root --chmod=755 ./files/ /
 
 EXPOSE 34197/udp
 
+ENV WHITELIST=0
+
 # Запуск
 WORKDIR /root/server
 ENTRYPOINT ["/root/scripts/start.sh"]
